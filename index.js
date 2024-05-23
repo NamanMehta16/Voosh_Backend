@@ -1,20 +1,24 @@
 const express = require('express');
 const connectDB = require('./config/dbConfig');
+const authRoutes = require('./routes/authRoutes');
+const passport = require('passport');
+const session = require('express-session');
 const app = express();
 
 // Connect to Database
 connectDB();
 
-// // Middleware
-// app.use(express.json());
-// app.use(passport.initialize());
+// Middleware
+app.use(express.json());
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// // Passport Config
-// require('./config/passport')(passport);
+// Passport Config
+require('./config/passport');
 
-// // Routes
-// app.use('/api/auth', authRoutes);
-// app.use('/api/users', userRoutes);
+// Routes
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
