@@ -2,6 +2,8 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
+require('dotenv').config();
+
 
 exports.register = async (req, res) => {
     const { name, email, password, bio, phone, photo, isPublic } = req.body;
@@ -15,7 +17,7 @@ exports.register = async (req, res) => {
         await user.save();
 
         const payload = { id: user.id };
-        jwt.sign(payload, 'voosh123', { expiresIn: 3600 }, (err, token) => {
+        jwt.sign(payload, process.env.JWT_Secret, { expiresIn: 3600 }, (err, token) => {
             if (err) throw err;
             res.status(200).send({ token, user });
         });
@@ -39,7 +41,7 @@ exports.login = async (req, res) => {
         }
 
         const payload = { id: user.id };
-        jwt.sign(payload, 'voosh123', { expiresIn: 3600 }, (err, token) => {
+        jwt.sign(payload, process.env.JWT_Secret, { expiresIn: 3600 }, (err, token) => {
             if (err) throw err;
             res.json({ token, user });
         });

@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/dbConfig');
 const authRoutes = require('./routes/authRoutes');
+const profileRoutes = require('./routes/profileRoutes')
 const passport = require('passport');
 const session = require('express-session');
 const app = express();
@@ -19,6 +20,7 @@ require('./config/passport');
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api', profileRoutes)
 
 const PORT = process.env.PORT || 5000;
 
